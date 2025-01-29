@@ -1,0 +1,10 @@
+build:
+  version: "1.0.0"
+
+accounts:
+  message: "Hello from accounts service"
+  contactDetails:
+    name: "Sahil"
+    email: "Sahil@gmail.com"
+  onCallSupport:
+   - "123456789"
