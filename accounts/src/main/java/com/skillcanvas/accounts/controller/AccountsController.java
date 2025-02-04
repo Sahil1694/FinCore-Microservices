@@ -7,6 +7,8 @@ import com.skillcanvas.accounts.dto.CustomerDto;
 import com.skillcanvas.accounts.dto.ErrorResponseDto;
 import com.skillcanvas.accounts.dto.ResponseDto;
 import com.skillcanvas.accounts.service.IAccountsService;
+import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
+import io.github.resilience4j.retry.annotation.Retry;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -34,10 +36,13 @@ import org.springframework.web.bind.annotation.*;
 @Validated
 public class AccountsController {
 
+    private static final org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(AccountsController.class);
+
     private final IAccountsService iAccountsService;
     public AccountsController(IAccountsService iAccountsService) {
         this.iAccountsService = iAccountsService;
     }
+
 
     @Value("${build.version}")
     private String buildVersion;
@@ -194,6 +199,7 @@ public class AccountsController {
             )
     }
     )
+    @RateLimiter(name = "getJavaVersion")
     @GetMapping("/java-version")
     public ResponseEntity<String> getJavaVersion() {
         return ResponseEntity
@@ -220,11 +226,23 @@ public class AccountsController {
             )
     }
     )
+    @Retry(name  ="getBuildInfo" , fallbackMethod = "getBuildInfoFallback")
     @GetMapping("/build-info")
     public ResponseEntity<String> getBuildInfo() {
+        logger.debug("getBuildInfo");
+        throw new NullPointerException();
+//        return ResponseEntity
+//                .status(HttpStatus.OK)
+//                .body(buildVersion);
+    }
+
+    public ResponseEntity<String> getBuildInfoFallback(Throwable throwable) {
+        logger.error("getBuildInfoFallback");
         return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(buildVersion);
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body("0.9");
+
+
     }
 
 
