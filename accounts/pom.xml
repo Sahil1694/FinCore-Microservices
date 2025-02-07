@@ -48,11 +48,7 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-devtools</artifactId>
-			<scope>runtime</scope>
-		</dependency>
+
 
 
 		<dependency>
@@ -135,7 +131,7 @@
 				<version>3.4.2</version>
 				<configuration>
 					<to>
-						<image>sahil1694/${project.artifactId}:s9</image>
+						<image>sahil1694/${project.artifactId}:s10</image>
 					</to>
 				</configuration>
 			</plugin>
