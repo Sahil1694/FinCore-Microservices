@@ -70,9 +70,10 @@ public class GatewayserverApplication {
 
 	@Bean
 	KeyResolver userKeyResolver() {
-		return exchange -> Mono.just(exchange.getRequest().getHeaders().getFirst("user"))
-				.defaultIfEmpty("ananymous");
+		return exchange -> Mono.justOrEmpty(exchange.getRequest().getHeaders().getFirst("user"))
+				.defaultIfEmpty("anonymous");
 	}
+
 
 
 }

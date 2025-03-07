@@ -72,6 +72,18 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-oauth2-resource-server</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-oauth2-jose</artifactId>
+		</dependency>
 	</dependencies>
 	<dependencyManagement>
 		<dependencies>
@@ -98,7 +110,7 @@
 				<version>3.4.2</version>
 				<configuration>
 					<to>
-						<image>sahil1694/${project.artifactId}:s11</image>
+						<image>sahil1694/${project.artifactId}:s12</image>
 					</to>
 				</configuration>
 			</plugin>
