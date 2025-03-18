@@ -4,6 +4,7 @@ import com.skillcanvas.accounts.constants.AccountsConstants;
 import com.skillcanvas.accounts.dto.AccountsDto;
 import com.skillcanvas.accounts.dto.CustomerDto;
 import com.skillcanvas.accounts.entiity.Accounts;
+import com.skillcanvas.accounts.dto.AccountsMsgDto;
 import com.skillcanvas.accounts.entiity.Customer;
 import com.skillcanvas.accounts.exception.CustomerAlreadyExistsException;
 import com.skillcanvas.accounts.exception.ResourceNotFoundException;
@@ -13,6 +14,9 @@ import com.skillcanvas.accounts.repository.AccountsRepository;
 import com.skillcanvas.accounts.repository.CustomerRepository;
 import com.skillcanvas.accounts.service.IAccountsService;
 import lombok.AllArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -23,8 +27,11 @@ import java.util.Random;
 @AllArgsConstructor
 public class AccountsServiceImpl implements IAccountsService {
 
+    private static final Logger log = LoggerFactory.getLogger(AccountsServiceImpl.class);
+
     private AccountsRepository accountsRepository;
     private CustomerRepository customerRepository;
+    private  final StreamBridge streamBridge;
 
     /**
      * Create a new account
@@ -40,7 +47,16 @@ public class AccountsServiceImpl implements IAccountsService {
         customer.setCreatedAt(LocalDateTime.now());
         customer.setCreatedBy("Anonymous");
         Customer savedCustomer =  customerRepository.save(customer);
-        accountsRepository.save(createNewAccounts(savedCustomer));
+        Accounts savedAccount = accountsRepository.save(createNewAccounts(savedCustomer));
+        sendCommunication(savedAccount, savedCustomer);
+    }
+
+    private void sendCommunication(Accounts account, Customer customer) {
+        var accountsMsgDto = new AccountsMsgDto(account.getAccountNumber(), customer.getName(),
+                customer.getEmail(), customer.getMobileNumber());
+        log.info("Sending Communication request for the details: {}", accountsMsgDto);
+        var result = streamBridge.send("sendCommunication-out-0", accountsMsgDto);
+        log.info("Is the Communication request successfully triggered ? : {}", result);
     }
 
     /**
