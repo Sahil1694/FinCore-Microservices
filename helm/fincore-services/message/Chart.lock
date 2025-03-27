@@ -1,0 +1,6 @@
+dependencies:
+- name: fincore-common
+  repository: file://../../fincore-common
+  version: 0.1.0
+digest: sha256:6a5bd3b345b635c85270a39d3aac5e8e14386beb4bc6a47f9b298785107a2247
+generated: "2025-03-23T13:39:57.2996629+05:30"

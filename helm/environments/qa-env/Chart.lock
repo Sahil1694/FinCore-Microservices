@@ -1,0 +1,27 @@
+dependencies:
+- name: fincore-common
+  repository: file://../../fincore-common
+  version: 0.1.0
+- name: configserver
+  repository: file://../../fincore-services/configserver
+  version: 0.1.0
+- name: eurekaserver
+  repository: file://../../fincore-services/eurekaserver
+  version: 0.1.0
+- name: accounts
+  repository: file://../../fincore-services/accounts
+  version: 0.1.0
+- name: cards
+  repository: file://../../fincore-services/cards
+  version: 0.1.0
+- name: loans
+  repository: file://../../fincore-services/loans
+  version: 0.1.0
+- name: gatewayserver
+  repository: file://../../fincore-services/gatewayserver
+  version: 0.1.0
+- name: message
+  repository: file://../../fincore-services/message
+  version: 0.1.0
+digest: sha256:9250c85699418e1843f3e624cef544447276bb01d04b1b84864dcc02bea066b0
+generated: "2025-03-23T13:56:16.2775964+05:30"
